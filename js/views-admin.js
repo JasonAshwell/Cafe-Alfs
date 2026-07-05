@@ -404,6 +404,21 @@
       }
     }, ['Apply']);
 
+    // Quick date range buttons — week runs Mon–Sun
+    const wkStart   = App.ViewsStaff.startOfWeek(now);
+    const wkEnd     = App.ViewsStaff.endOfWeek(now);
+    const moStart   = App.ViewsStaff.startOfMonth(now);
+    const moEnd     = App.ViewsStaff.endOfMonth(now);
+    const todayOnly = S.parseDateStr(S.dateStr(now));
+
+    function rptQuickBtn(label, from, to) {
+      const active = S.dateStr(reportFrom) === S.dateStr(from) && S.dateStr(reportTo) === S.dateStr(to);
+      return el('button', {
+        class: 'tab' + (active ? ' active' : ''),
+        onClick: () => { reportFrom = from; reportTo = to; App.App.render(); }
+      }, [label]);
+    }
+
     const agenda = S.buildAgenda(db, reportFrom, reportTo, now);
     const total = agenda.length;
     const completed = agenda.filter(r => r.status === 'completed').length;
@@ -448,6 +463,9 @@
     container.appendChild(el('div', { class: 'page' }, [
       el('h1', {}, ['Reports & Compliance']),
       el('div', { class: 'filter-row' }, [
+        rptQuickBtn('Today', todayOnly, todayOnly),
+        rptQuickBtn('This week', wkStart, wkEnd),
+        rptQuickBtn('This month', moStart, moEnd),
         el('label', { class: 'field-label' }, ['From']), fromInput,
         el('label', { class: 'field-label' }, ['To']), toInput,
         applyBtn,
