@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cafe Alf Fresco — Compliance Tracker</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Loading state shown while connecting to Supabase -->
+    <div id="boot-screen" style="display:flex;align-items:center;justify-content:center;height:100vh;flex-direction:column;gap:1rem;font-family:sans-serif;color:#666">
+      <div style="font-size:2rem">☕</div>
+      <div id="boot-msg">Connecting to database…</div>
+    </div>
+  </div>
+  <div id="toast-container"></div>
+
+  <!-- Supabase SDK (must load before config.js and storage.js) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+  <!-- App configuration (fill in SUPABASE_URL and SUPABASE_ANON_KEY) -->
+  <script src="js/config.js"></script>
+
+  <!-- Data layer -->
+  <script src="js/storage.js"></script>
+  <script src="js/scheduler.js"></script>
+  <script src="js/auth.js"></script>
+  <!-- UI helpers -->
+  <script src="js/util.js"></script>
+  <!-- Views -->
+  <script src="js/views-staff.js"></script>
+  <script src="js/views-admin.js"></script>
+  <!-- App shell / router (must load last) -->
+  <script src="js/app.js"></script>
+
+  <script>
+    // Initialise Supabase connection, then start the app.
+    // The boot screen above is replaced once init() resolves.
+    App.Storage.init()
+      .then(function () {
+        document.getElementById('app').innerHTML = '';
+        App.App.init();
+      })
+      .catch(function (err) {
+        document.getElementById('boot-msg').textContent = '';
+        var screen = document.getElementById('boot-screen');
+        screen.style.color = '#c00';
+        var msg = document.createElement('div');
+        msg.style.maxWidth = '480px';
+        msg.style.textAlign = 'center';
+        msg.style.fontSize = '0.9rem';
+        msg.innerHTML = '<strong>Could not connect to the database</strong><br><br>' +
+          err.message + '<br><br>' +
+          '<span style="color:#999">Check the browser console for more detail, ' +
+          'and see <code>SETUP.md</code> for configuration instructions.</span>';
+        screen.appendChild(msg);
+        console.error('[Boot]', err);
+      });
+  </script>
+</body>
+</html>
