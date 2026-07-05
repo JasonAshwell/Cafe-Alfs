@@ -174,3 +174,51 @@ textarea.input { resize: vertical; }
   .task-row { flex-direction: column; }
   .task-side { align-items: flex-start; }
 }
+
+/* ---------- Print ---------- */
+.print-header { display: none; }
+.print-footer { display: none; }
+
+@media print {
+  /* Hide navigation and all interactive controls */
+  .topbar,
+  .tabs,
+  .filter-row,
+  .action-area,
+  .btn-row,
+  #toast-container,
+  .no-print { display: none !important; }
+
+  body { background: white; color: #000; }
+  .view { padding: 0; max-width: none; }
+
+  /* Print header */
+  .print-header {
+    display: block;
+    text-align: center;
+    border-bottom: 2px solid #000;
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+  }
+  .print-cafe-name { font-size: 1.6rem; font-weight: 700; }
+  .print-subtitle { font-size: 1.05rem; margin-top: 4px; }
+  .print-meta { font-size: 0.78rem; color: #666; margin-top: 4px; }
+
+  /* Task list */
+  .panel { box-shadow: none; border: 1px solid #ccc; padding: 12px; margin-top: 0; }
+  .task-row { break-inside: avoid; page-break-inside: avoid; flex-direction: row; }
+  .task-side { min-width: 120px; }
+
+  /* Badges — keep readable in B&W */
+  .badge { border: 1px solid #999; background: none !important; color: #000 !important; }
+
+  /* Print footer (sign-off line) */
+  .print-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 32px;
+    padding-top: 14px;
+    border-top: 1px solid #ccc;
+    font-size: 0.9rem;
+  }
+}
