@@ -195,17 +195,31 @@
     teamFilterSelect.addEventListener('change', () => { mtTeamFilter = teamFilterSelect.value; App.App.render(); });
 
     const wrap = el('div', { class: 'page' }, [
-      el('h1', {}, ['My Tasks']),
-      el('div', { class: 'tabs' }, [
+      // Print-only header — hidden on screen, shown when printing
+      el('div', { class: 'print-header' }, [
+        el('div', { class: 'print-cafe-name' }, [db.settings.cafeName]),
+        el('div', { class: 'print-subtitle' }, ['Daily Task List — ' + fmtDate(todayStr())]),
+        el('div', { class: 'print-meta' }, ['Printed: ' + new Date().toLocaleString('en-GB')])
+      ]),
+      el('div', { class: 'page-head' }, [
+        el('h1', {}, ['My Tasks']),
+        mtRange === 'today' ? el('button', { class: 'btn btn-ghost btn-sm no-print', onClick: () => window.print() }, ['Print today\'s tasks']) : null
+      ]),
+      el('div', { class: 'tabs no-print' }, [
         tabBtn('Today', 'today'), tabBtn('This week', 'week'), tabBtn('This month', 'month')
       ]),
-      el('div', { class: 'filter-row' }, [
+      el('div', { class: 'filter-row no-print' }, [
         el('label', { class: 'field-label' }, ['Team']), teamFilterSelect
       ]),
       el('div', { class: 'panel' }, [
         agenda.length === 0
           ? el('p', { class: 'muted' }, ['No tasks in this range.'])
           : el('div', { class: 'task-list' }, groupByDate(agenda).map(group => renderDateGroup(group, db, user, canActOnBehalf)))
+      ]),
+      // Print-only footer — sign-off line
+      el('div', { class: 'print-footer' }, [
+        el('span', {}, ['Signed off by: _______________________________']),
+        el('span', {}, ['Date / Time: ___________________________________'])
       ])
     ]);
     container.appendChild(wrap);
