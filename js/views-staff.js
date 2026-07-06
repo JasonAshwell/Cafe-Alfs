@@ -203,7 +203,7 @@
       ]),
       el('div', { class: 'page-head' }, [
         el('h1', {}, ['My Tasks']),
-        mtRange === 'today' ? el('button', { class: 'btn btn-ghost btn-sm no-print', onClick: () => window.print() }, ['Print today\'s tasks']) : null
+        mtRange === 'today' ? el('button', { class: 'btn btn-print btn-sm no-print', onClick: () => window.print() }, ['Print today\'s tasks']) : null
       ]),
       el('div', { class: 'tabs no-print' }, [
         tabBtn('Today', 'today'), tabBtn('This week', 'week'), tabBtn('This month', 'month')
