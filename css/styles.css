@@ -83,6 +83,8 @@ textarea.input { resize: vertical; }
 .btn-ghost { background: transparent; color: var(--brown-700); border: 1px solid var(--cream-300); }
 .btn-ghost:hover { background: var(--cream-200); }
 .btn-danger { background: var(--red-600); color: #fff; }
+.btn-print { background: #2563eb; color: #fff; }
+.btn-print:hover { background: #1d4ed8; }
 .btn-sm { padding: 6px 10px; font-size: 0.82rem; }
 .btn-row { display: flex; gap: 8px; margin-top: 6px; }
 
